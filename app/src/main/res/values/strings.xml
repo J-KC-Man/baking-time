@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">baking-time</string>
+    <string name="app_name">Baking Time</string>
+
+    <!--Main Activity -->
+    <string name="servings">Servings: </string>
+
+    <!--Recipe detail-->
 </resources>

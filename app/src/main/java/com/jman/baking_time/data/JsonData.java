@@ -102,7 +102,7 @@ public class JsonData {
             "      },\n" +
             "      {\n" +
             "        \"id\": 6,\n" +
-            "        \"shortDescription\": \"Finishing Steps\",\n" +
+            "        \"shortDescription\": \"Finishing Step\",\n" +
             "        \"description\": \"6. Pour the filling into the prepared crust and smooth the top. Spread the whipped cream over the filling. Refrigerate the pie for at least 2 hours. Then it's ready to serve!\",\n" +
             "        \"videoURL\": \"https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffda45_9-add-mixed-nutella-to-crust-creampie/9-add-mixed-nutella-to-crust-creampie.mp4\",\n" +
             "        \"thumbnailURL\": \"\"\n" +
