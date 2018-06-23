@@ -85,9 +85,9 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         if (position == 0) {
             return INGREDIENTS;
         }
-        else if (position > 0 && position <= ingredients.size()) { //if between 1 and the number of reviews inflate review views after movie details
-            return STEP;
-        }
+//        else if (position > 0 && position <= ingredients.size()) { //if between 1 and the number of reviews inflate review views after movie details
+//            return STEP;
+//        }
         return -1;
     }
 
