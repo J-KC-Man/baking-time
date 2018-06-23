@@ -1,5 +1,6 @@
 package com.jman.baking_time.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jman.baking_time.R;
 import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
+import com.jman.baking_time.interfaces.CallbackInvoker;
 import com.jman.baking_time.models.Recipe;
 
 import java.lang.reflect.Type;
@@ -29,7 +31,7 @@ import static com.jman.baking_time.data.JsonData.json;
  * This view will have a recyclerView in it
  */
 
-public class RecipesFragment extends Fragment {
+public class RecipesFragment extends Fragment implements CallbackInvoker {
 
     /* RV */
     private RecyclerView recipesRecyclerView;
@@ -47,6 +49,11 @@ public class RecipesFragment extends Fragment {
 
     public OnRecipeClickListener getmCallback() {
         return mCallback;
+    }
+
+    @Override
+    public void invokeCallback(int position) {
+        mCallback.onRecipeSelected(position);
     }
 
     public interface OnRecipeClickListener {

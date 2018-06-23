@@ -105,7 +105,7 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 //                );
 
                 // trigger click listener callback implemented in fragment class
-                fragment.getmCallback().onRecipeSelected(position);
+                fragment.invokeCallback(position);
 
 
             }
