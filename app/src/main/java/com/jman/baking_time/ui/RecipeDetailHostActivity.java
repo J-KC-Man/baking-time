@@ -22,14 +22,14 @@ public class RecipeDetailHostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_step_host);
 
         // create new instance of fragment and display using fragment manager
-        RecipesFragment recipesFragment = new RecipesFragment();
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
 
         // use a FragmentManager and transaction to add fragment to the screen
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         // Fragment transaction
         fragmentManager.beginTransaction()
-                .add(R.id.recipeDetail_container, recipesFragment)
+                .add(R.id.recipeDetail_container, recipeDetailFragment)
                 .commit();
     }
 }

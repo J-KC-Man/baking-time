@@ -31,6 +31,8 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private Context mContext;
 
+    private RecipesFragment fragment = new RecipesFragment();
+
     public RecipesRecyclerViewAdapter(List<Recipe> recipes, Context mContext) {
         this.recipes = recipes;
         this.mContext = mContext; // important so the adapter knows which activity it is attached to
@@ -94,20 +96,18 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             int position = getAdapterPosition(); // gets item position
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
 
-                // init recipe object to get recipe info to pass in a Bundle
-                Recipe recipe = recipes.get(position);
+//                // init recipe object to get recipe info to pass in a Bundle
+//                Recipe recipe = recipes.get(position);
+//
+//                Recipe recipeDetail = new Recipe(
+//                        recipe.getIngredients(),
+//                        recipe.getSteps()
+//                );
 
-                // launch intent and pass in bundle to RecipeDetailHostActivity
-                // this bundle needs to have both of the arrays for a recipe
-                Intent intent = new Intent(v.getContext(), RecipeDetailHostActivity.class);
+                // trigger click listener callback implemented in fragment class
+                fragment.getmCallback().onRecipeSelected(position);
 
-                Recipe recipeDetail = new Recipe(
-                        recipe.getIngredients(),
-                        recipe.getSteps()
-                );
 
-                intent.putExtra("recipeDetails", recipeDetail);
-                mContext.startActivity(intent);
             }
         }
     } // end of viewholder class

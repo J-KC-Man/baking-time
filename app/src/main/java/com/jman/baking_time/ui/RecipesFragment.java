@@ -1,5 +1,6 @@
 package com.jman.baking_time.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,9 +39,37 @@ public class RecipesFragment extends Fragment {
     // list of recipes
     private List<Recipe> recipes;
 
+    public List<Recipe> getRecipes() {
+        return this.recipes;
+    }
+
+    private OnRecipeClickListener mCallback;
+
+    public OnRecipeClickListener getmCallback() {
+        return mCallback;
+    }
+
+    public interface OnRecipeClickListener {
+        void onRecipeSelected(int position); // position that user click in RecyclerView
+    }
+
     /*
-    * Mandatory constructor for instantiating the fragment
+    * Make sure container activity has implemented the callback
     * */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (OnRecipeClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnRecipeClickListener");
+        }
+    }
+
+    /*
+        * Mandatory constructor for instantiating the fragment
+        * */
     public RecipesFragment() {
     }
 
@@ -69,6 +98,7 @@ public class RecipesFragment extends Fragment {
 
         // Link the adapter to the RecyclerView
         recipesRecyclerView.setAdapter(mAdapter);
+
 
         return rootView;
     }

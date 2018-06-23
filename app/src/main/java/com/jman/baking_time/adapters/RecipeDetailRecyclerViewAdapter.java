@@ -48,10 +48,10 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 View ingredientsView = inflater.inflate(R.layout.recipe_ingredients_list_item, parent, false);
                 viewHolder = new IngredientsViewHolder(ingredientsView);
                 break;
-            case STEP:
+//            case STEP:
 //                View stepsView = inflater.inflate(R.layout.recipe_description_list_item, parent, false);
 //                viewHolder = new IngredientsViewHolder(ingredientsView);
-                break;
+//                break;
 
         }
         return viewHolder;
