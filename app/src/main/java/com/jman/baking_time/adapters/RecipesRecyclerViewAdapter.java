@@ -32,7 +32,7 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private Context mContext;
 
-    private RecipesFragment mFragment = new RecipesFragment();
+    private RecipesFragment mFragment;
 
     public RecipesRecyclerViewAdapter(List<Recipe> recipes, Context mContext, RecipesFragment fragment) {
         this.mFragment = fragment;
