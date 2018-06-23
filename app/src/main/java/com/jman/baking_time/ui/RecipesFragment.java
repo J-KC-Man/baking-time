@@ -98,7 +98,7 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Create an adapter for that cursor to display the data
-        mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext());
+        mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
 
         // divider line at bottom of the recipe view
         recipesRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));

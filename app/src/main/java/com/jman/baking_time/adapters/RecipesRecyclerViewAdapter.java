@@ -1,5 +1,6 @@
 package com.jman.baking_time.adapters;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -31,9 +32,10 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private Context mContext;
 
-    private RecipesFragment fragment = new RecipesFragment();
+    private RecipesFragment mFragment = new RecipesFragment();
 
-    public RecipesRecyclerViewAdapter(List<Recipe> recipes, Context mContext) {
+    public RecipesRecyclerViewAdapter(List<Recipe> recipes, Context mContext, RecipesFragment fragment) {
+        this.mFragment = fragment;
         this.recipes = recipes;
         this.mContext = mContext; // important so the adapter knows which activity it is attached to
     }
@@ -105,7 +107,7 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 //                );
 
                 // trigger click listener callback implemented in fragment class
-                fragment.invokeCallback(position);
+                mFragment.invokeCallback(position);
 
 
             }
