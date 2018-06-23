@@ -31,6 +31,8 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     private Context mContext;
 
+    RecyclerView.ViewHolder viewHolder;
+
     public RecipeDetailRecyclerViewAdapter(List<Ingredient> ingredients, List<Step> steps, Context context) {
         this.ingredients = ingredients;
         this.steps = steps;
@@ -40,7 +42,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        RecyclerView.ViewHolder viewHolder = null;
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         switch (viewType) {
@@ -151,9 +153,9 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             int quantity = Integer.parseInt(ingredients.get(position).getQuantity());
 
             if(quantity > 1) {
-                return ingredients.get(position).getQuantity() + "" + originalQuantity + "s";
+                return ingredients.get(position).getQuantity() + " " + originalQuantity + "s";
             } else {
-                return ingredients.get(position).getQuantity() + "" + originalQuantity;
+                return ingredients.get(position).getQuantity() + " " + originalQuantity;
             }
         }
 
