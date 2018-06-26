@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.jman.baking_time.R;
@@ -50,10 +51,10 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 View ingredientsView = inflater.inflate(R.layout.recipe_ingredients_list_item, parent, false);
                 viewHolder = new IngredientsViewHolder(ingredientsView);
                 break;
-//            case STEP:
-//                View stepsView = inflater.inflate(R.layout.recipe_description_list_item, parent, false);
-//                viewHolder = new IngredientsViewHolder(ingredientsView);
-//                break;
+            case STEP:
+                View stepsView = inflater.inflate(R.layout.recipe_description_list_item, parent, false);
+                viewHolder = new DescriptionViewHolder(stepsView);
+                break;
 
         }
         return viewHolder;
@@ -68,26 +69,29 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 Log.d(TAG, "item count " + getItemCount());
                 Log.d(TAG, "onBindViewHolder for INGREDIENTS Position: " + position);
                 break;
-//            case STEP:
-//                MovieReviewViewHolder reviewsVH = (MovieReviewViewHolder) holder;
-//                reviewsVH.bindMovieReviewViews(position - ingredients.size());
-//                break;
+            case STEP:
+                DescriptionViewHolder descriptionViewHolder = (DescriptionViewHolder) holder;
+                descriptionViewHolder.bindViews(position);
+                break;
 
         }
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.size();
+        return ingredients.size() + steps.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         // top of the recyclerview list of viewholders
-        if (position == 0) {
+        if (position <= ingredients.size()) {
             return INGREDIENTS;
         }
-//        else if (position > 0 && position <= ingredients.size()) { //if between 1 and the number of reviews inflate review views after movie details
+        else if (position > ingredients.size() && position <= steps.size()) { //if between 1 and the number of reviews inflate review views after movie details
+            return STEP;
+        }
+//        else {
 //            return STEP;
 //        }
         return -1;
@@ -150,7 +154,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         }
 
         public String determineQuantity(int position, String originalQuantity) {
-            int quantity = Integer.parseInt(ingredients.get(position).getQuantity());
+            double quantity = Double.parseDouble(ingredients.get(position).getQuantity());
 
             if(quantity > 1) {
                 return ingredients.get(position).getQuantity() + " " + originalQuantity + "s";
@@ -161,5 +165,33 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     } // end of viewholder class
 
+    class DescriptionViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView stepTitle;
+        private TextView stepDescription;
+        private Button viewStepButton;
+
+        public DescriptionViewHolder(View itemView) {
+            super(itemView);
+
+            stepTitle = itemView.findViewById(R.id.recipe_description_title_textView);
+            stepDescription = itemView.findViewById(R.id.recipe_description_textView);
+            viewStepButton = itemView.findViewById(R.id.view_step_button);
+        }
+
+        public void bindViews(int position) {
+            stepTitle.setText("Step " + steps.get(position).getId());
+            stepDescription.setText(steps.get(position).getShortDescription());
+
+            viewStepButton.setText("View step " + steps.get(position).getId());
+
+            viewStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+    }
 
 } // end of class
