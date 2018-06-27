@@ -72,6 +72,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             case STEP:
                 DescriptionViewHolder descriptionViewHolder = (DescriptionViewHolder) holder;
                 descriptionViewHolder.bindViews(position);
+                Log.d(TAG, "onBindViewHolder for Steps Position: " + position);
                 break;
 
         }
@@ -85,10 +86,10 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public int getItemViewType(int position) {
         // top of the recyclerview list of viewholders
-        if (position >= 0 && position <= ingredients.size()) {
+        if (position >= 0 && position < ingredients.size()) {
             return INGREDIENTS;
         }
-        else if (position > ingredients.size() && position <= steps.size()) { //if between 1 and the number of reviews inflate review views after movie details
+        else if (position >= ingredients.size() && position < steps.size()) { //if between 1 and the number of reviews inflate review views after movie details
             return STEP;
         }
 //        else {
