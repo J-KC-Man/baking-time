@@ -13,6 +13,7 @@ import com.jman.baking_time.R;
 import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,8 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     private List<Step> steps;
 
+    private List<Object> ingredientsAndSteps = new ArrayList<>();
+
     private Context mContext;
 
     RecyclerView.ViewHolder viewHolder;
@@ -38,6 +41,11 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         this.ingredients = ingredients;
         this.steps = steps;
         this.mContext = context;
+
+        ingredientsAndSteps.addAll(ingredients);
+        ingredientsAndSteps.addAll(steps);
+
+
     }
 
     @Override
@@ -54,6 +62,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             case STEP:
                 View stepsView = inflater.inflate(R.layout.recipe_description_list_item, parent, false);
                 viewHolder = new DescriptionViewHolder(stepsView);
+                Log.d(TAG, "returned STEP");
                 break;
 
         }
@@ -71,31 +80,46 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 break;
             case STEP:
                 DescriptionViewHolder descriptionViewHolder = (DescriptionViewHolder) holder;
-                descriptionViewHolder.bindViews(position);
+                descriptionViewHolder.bindViews(position - ingredients.size());
                 Log.d(TAG, "onBindViewHolder for Steps Position: " + position);
                 break;
-
         }
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.size() + steps.size();
+        return ingredientsAndSteps.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         // top of the recyclerview list of viewholders
-        if (position >= 0 && position < ingredients.size()) {
-            return INGREDIENTS;
-        }
-        else if (position >= ingredients.size() && position < steps.size()) { //if between 1 and the number of reviews inflate review views after movie details
-            return STEP;
-        }
-//        else {
+//        if (position > 0 && position < ingredients.size()) {
+//            Log.d(TAG, "returned INGREDIENTS at position " + position);
+//            Log.d(TAG, "size of ingredients list " + ingredients.size());
+//           // Log.d(TAG, "size of ingredients and steps list " + (ingredients.size() + steps.size()));
+//            return INGREDIENTS;
+//        }
+//        else if (position >= ingredients.size() && position < steps.size() + ingredients.size()) { //if between 9 and the number of steps inflate review views after ingredients
+//            Log.d(TAG, "returned STEP at position " + position);
 //            return STEP;
 //        }
-        return -1;
+//        else {
+//            Log.d(TAG, "returned STEP at position " + position);
+//            return STEP;
+//        }
+
+        if(ingredientsAndSteps.get(position) instanceof Ingredient) {
+            Log.d(TAG, "returned INGREDIENTS at position " + position);
+            return INGREDIENTS;
+        }
+        else if(ingredientsAndSteps.get(position) instanceof Step) {
+            Log.d(TAG, "returned STEP at position " + position);
+            return STEP;
+        }
+
+            return -1;
+
     }
 
     class IngredientsViewHolder extends RecyclerView.ViewHolder {
