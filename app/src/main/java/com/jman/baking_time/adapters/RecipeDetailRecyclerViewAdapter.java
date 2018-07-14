@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.jman.baking_time.R;
 import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Step;
+import com.jman.baking_time.ui.RecipeDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,13 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     RecyclerView.ViewHolder viewHolder;
 
-    public RecipeDetailRecyclerViewAdapter(List<Ingredient> ingredients, List<Step> steps, Context context) {
+    private RecipeDetailFragment recipeDetailFragment;
+
+    public RecipeDetailRecyclerViewAdapter(List<Ingredient> ingredients, List<Step> steps, Context context, RecipeDetailFragment fragment) {
         this.ingredients = ingredients;
         this.steps = steps;
         this.mContext = context;
+        this.recipeDetailFragment = fragment;
 
         ingredientsAndSteps.addAll(ingredients);
         ingredientsAndSteps.addAll(steps);
@@ -192,6 +196,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     class DescriptionViewHolder extends RecyclerView.ViewHolder {
 
+
         private TextView stepTitle;
         private TextView stepDescription;
         private Button viewStepButton;
@@ -213,7 +218,11 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             viewStepButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    int position = getAdapterPosition(); // gets item position
+                    if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                        Log.d(TAG, "the STEP object is at position " + position);
+                        recipeDetailFragment.invokeRecipeStepCallback(position, steps.get(position-ingredients.size()));
+                    }
                 }
             });
         }

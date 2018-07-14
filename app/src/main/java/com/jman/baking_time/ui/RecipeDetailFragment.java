@@ -1,5 +1,6 @@
 package com.jman.baking_time.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,10 @@ import android.view.ViewGroup;
 import com.jman.baking_time.R;
 import com.jman.baking_time.adapters.RecipeDetailRecyclerViewAdapter;
 import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
+import com.jman.baking_time.interfaces.CallbackInvoker;
+import com.jman.baking_time.interfaces.IRecipeStepCallbackInvoker;
+import com.jman.baking_time.interfaces.OnRecipeClickListener;
+import com.jman.baking_time.interfaces.OnRecipeStepClickListener;
 import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Recipe;
 import com.jman.baking_time.models.Step;
@@ -27,7 +32,7 @@ import java.util.List;
  * This fragment shows the recipe ingredients and clickable steps
  */
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbackInvoker {
 
     // set up RV and Adapter
     private RecyclerView recipeDetailRecyclerView;
@@ -37,6 +42,24 @@ public class RecipeDetailFragment extends Fragment {
 
     private List<Ingredient> ingedients;
     private List<Step> steps;
+
+    private OnRecipeStepClickListener mCallback;
+
+    /*
+ * Make sure container activity has implemented the callback
+ * The context is the host activity that has implemented the OnRecipeClickListener
+ * interface
+ * */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (OnRecipeStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnRecipeClickListener");
+        }
+    }
 
     /*
     * Mandatory constructor for instantiating the fragment
@@ -57,7 +80,7 @@ public class RecipeDetailFragment extends Fragment {
         recipeDetailRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Create an adapter for that cursor to display the data
-        mAdapter = new RecipeDetailRecyclerViewAdapter(ingedients, steps, getContext());
+        mAdapter = new RecipeDetailRecyclerViewAdapter(ingedients, steps, getContext(), RecipeDetailFragment.this);
 
         // divider line at bottom of the recipe view
         recipeDetailRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -66,5 +89,10 @@ public class RecipeDetailFragment extends Fragment {
         recipeDetailRecyclerView.setAdapter(mAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void invokeRecipeStepCallback(int position, Step step) {
+        mCallback.onRecipeStepSelected(position, step);
     }
 }

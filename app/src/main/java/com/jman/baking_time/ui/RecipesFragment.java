@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jman.baking_time.R;
 import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
 import com.jman.baking_time.interfaces.CallbackInvoker;
+import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Recipe;
 
 import java.lang.reflect.Type;
@@ -47,21 +48,26 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
     private OnRecipeClickListener mCallback;
 
-    public OnRecipeClickListener getmCallback() {
-        return mCallback;
-    }
+//    public OnRecipeClickListener getmCallback() {
+//        return mCallback;
+//    }
 
+    /*
+    * Tell host activity to call its onRecipeSelected(position) implementation
+    * */
     @Override
     public void invokeCallback(int position) {
         mCallback.onRecipeSelected(position);
     }
 
-    public interface OnRecipeClickListener {
-        void onRecipeSelected(int position); // position that user click in RecyclerView
-    }
+//    public interface OnRecipeClickListener {
+//        void onRecipeSelected(int position); // position that user click in RecyclerView
+//    }
 
     /*
     * Make sure container activity has implemented the callback
+    * The context is the host activity that has implemented the OnRecipeClickListener
+    * interface
     * */
     @Override
     public void onAttach(Context context) {

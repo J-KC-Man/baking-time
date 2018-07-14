@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jman.baking_time.R;
+import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Recipe;
 
 import java.io.FileNotFoundException;
@@ -16,7 +17,7 @@ import java.util.List;
 
 import static com.jman.baking_time.data.JsonData.json;
 
-public class MainActivity extends AppCompatActivity implements RecipesFragment.OnRecipeClickListener {
+public class MainActivity extends AppCompatActivity implements OnRecipeClickListener {
 
     private  RecipesFragment recipesFragment;
 

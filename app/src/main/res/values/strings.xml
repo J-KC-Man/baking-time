@@ -5,4 +5,8 @@
     <string name="servings">Servings: </string>
 
     <!--Recipe detail-->
+
+    <!--Recipe step-->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 </resources>
