@@ -54,6 +54,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         arguments.putString("videoUrl", step.getVideoURL());
         arguments.putString("thumbnailUrl", step.getThumbnailURL());
         arguments.putString("description", step.getDescription());
+        arguments.putString("shortDescription", step.getShortDescription());
 
         recipeStepFragment.setArguments(arguments);
 

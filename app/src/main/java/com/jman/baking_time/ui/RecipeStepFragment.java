@@ -35,6 +35,8 @@ public class RecipeStepFragment extends Fragment {
 
     private Step step;
 
+    private Bundle bundle;
+
 //    /*
 //   * Make sure container activity has implemented the callback
 //   * The context is the host activity that has implemented the OnRecipeClickListener
@@ -63,6 +65,10 @@ public class RecipeStepFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_step, container, false);
 
+        bundle = getArguments();
+
+        getActivity().setTitle(bundle.getString("shortDescription"));
+
         // bind recyclerView with XML recyclerView declaration
         recipeStepRecyclerView = rootView.findViewById(R.id.recipeStep_RecyclerView);
 
@@ -70,10 +76,10 @@ public class RecipeStepFragment extends Fragment {
         recipeStepRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Create an adapter to display the data
-        mAdapter = new RecipeStepRecyclerViewAdapter(step, getContext());
+        mAdapter = new RecipeStepRecyclerViewAdapter(step, getContext(), bundle);
 
         // divider line at bottom of the recipe view
-        recipeStepRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+//        recipeStepRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         // Link the adapter to the RecyclerView
         recipeStepRecyclerView.setAdapter(mAdapter);

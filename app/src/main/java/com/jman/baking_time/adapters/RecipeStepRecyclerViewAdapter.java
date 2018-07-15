@@ -1,6 +1,7 @@
 package com.jman.baking_time.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +27,15 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
    // private RecipeDetailFragment mFragment;
     private Context mContext;
 
+    private Bundle bundle;
 
-    public RecipeStepRecyclerViewAdapter(Step step, Context context) {
+
+    public RecipeStepRecyclerViewAdapter(Step step, Context context, Bundle bundle) {
         this.step = step;
         this.mContext = context;
         // to make sure the right instance of fragment is passed with the right callback
        // this.mFragment = fragment;
+        this.bundle = bundle;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         // define the context
-        View recipeStepView = inflater.inflate(R.layout.recipe_list_item, parent, false);
+        View recipeStepView = inflater.inflate(R.layout.recipe_step_list_item, parent, false);
         // pass in context to viewholder
         viewHolder = new RecipeStepRecyclerViewAdapter.RecipeStepViewHolder(recipeStepView);
 
@@ -78,7 +82,14 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         }
 
         public void bindViews() {
-            recipeStepDescription.setText(step.getDescription());
+
+            // get the fragment get agrument, get description
+           // recipeStepDescription.setText(step.getDescription());
+
+            recipeStepDescription.setText(bundle.getString("description"));
+
+            // recipeStepDescription is null
+            //recipeStepDescription.setText("test");
 
         }
     }
