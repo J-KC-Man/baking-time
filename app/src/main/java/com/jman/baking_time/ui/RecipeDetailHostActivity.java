@@ -46,7 +46,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         // this replaces the fragment with the recipe step fragment
         // Fragment transaction
 
-        // todo: pass Step data from fragment to fragment
+        // pass Step data from fragment to fragment
         recipeStepFragment = new RecipeStepFragment();
 
         Bundle arguments = new Bundle();
