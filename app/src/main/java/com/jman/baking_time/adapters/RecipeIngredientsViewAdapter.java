@@ -69,59 +69,22 @@ public class RecipeIngredientsViewAdapter extends RecyclerView.Adapter<RecyclerV
         private static final String OZ = "Oz";
 
         private TextView ingredient;
-        private TextView quantity;
+
 
 
         public IngredientsViewHolder(View itemView) {
             super(itemView);
             ingredient = itemView.findViewById(R.id.ingredient_textView);
-            quantity = itemView.findViewById(R.id.quantity_textView);
+
 
         }
 
         public void bindView(int position) {
-            ingredient.setText(ingredients.get(position).getIngredient());
 
-            String measure = ingredients.get(position).getMeasure();
-
-            switch (measure) {
-                case "TBLSP":
-                    quantity.setText(determineQuantity(position, TBLSP));
-                    break;
-                case "CUP":
-                    quantity.setText(determineQuantity(position, CUP));
-                    break;
-                case "TSP":
-                    quantity.setText(determineQuantity(position, TBLSP));
-                    break;
-                case "UNIT":
-                    quantity.setText(
-                            ingredients.get(position).getQuantity());
-                    break;
-                case "OZ":
-                    quantity.setText(
-                            ingredients.get(position).getQuantity() + "" + OZ);
-                    break;
-                case "K":
-                    quantity.setText(
-                            ingredients.get(position).getQuantity() + "" + K);
-                    break;
-                case "G":
-                    quantity.setText(
-                            ingredients.get(position).getQuantity() + "" + K);
-                    break;
-
-            }
-        }
-
-        public String determineQuantity(int position, String originalQuantity) {
-            double quantity = Double.parseDouble(ingredients.get(position).getQuantity());
-
-            if(quantity > 1) {
-                return ingredients.get(position).getQuantity() + " " + originalQuantity + "s";
-            } else {
-                return ingredients.get(position).getQuantity() + " " + originalQuantity;
-            }
+            ingredient.setText(
+                    ingredients.get(position).getQuantity() + " "
+                            + ingredients.get(position).getMeasure() + " "
+                            + ingredients.get(position).getIngredient());
         }
 
     } // end of viewholder class
