@@ -86,23 +86,17 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         Button nextButton;
         Button previousButton;
 
-        /*Exoplayer */
-        private SimpleExoPlayer mExoPlayer;
-        private SimpleExoPlayerView mPlayerView;
 
         public RecipeStepViewHolder(View itemView) {
             super(itemView);
-
-            // Initialize the player view.
-            mPlayerView = itemView.findViewById(R.id.playerView);
 
             //imageView = itemView.findViewById(R.id.imageView);
             recipeStepDescription = itemView.findViewById(R.id.recipe_step_description);
             nextButton = itemView.findViewById(R.id.button_next);
             previousButton = itemView.findViewById(R.id.button_prev);
 
-            initializePlayer(Uri.parse(bundle.getString("thumbnailUrl")));
         }
+
 
         public void bindViews() {
             recipeStepDescription.setText(bundle.getString("description"));
@@ -113,32 +107,6 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
 
         }
 
-        /**
-         * Initialize ExoPlayer.
-         * @param mediaUri The URI of the sample to play.
-         */
-        private void initializePlayer(Uri mediaUri) {
-            if (mExoPlayer == null) {
-                // Create an instance of the ExoPlayer.
-                TrackSelector trackSelector = new DefaultTrackSelector();
-                LoadControl loadControl = new DefaultLoadControl();
-                mExoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, loadControl);
-                mPlayerView.setPlayer(mExoPlayer);
-                // Prepare the MediaSource.
-                String userAgent = Util.getUserAgent(mContext, "Baking Time");
-                MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                        mContext, userAgent), new DefaultExtractorsFactory(), null, null);
-                mExoPlayer.prepare(mediaSource);
-                mExoPlayer.setPlayWhenReady(true);
-            }
-        }
-
-        /*Release ExoPlayer*/
-        private void releasePlayer() {
-            mExoPlayer.stop();
-            mExoPlayer.release();
-            mExoPlayer = null;
-        }
 
 
     }

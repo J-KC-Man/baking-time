@@ -49,6 +49,8 @@ import com.jman.baking_time.interfaces.IRecipeStepCallbackInvoker;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Step;
 
+import java.util.List;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
@@ -64,12 +66,16 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 //
 //    private Step step;
 
+    private List<Step> steps;
+    int stepId;
+
     private Bundle bundle;
 
 
     TextView recipeStepDescription;
     Button nextButton;
     Button previousButton;
+    boolean nextButtonClicked;
 
     /*Exoplayer */
     private SimpleExoPlayer mExoPlayer;
@@ -109,6 +115,9 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
         bundle = getArguments();
 
+        steps = bundle.getParcelableArrayList("steps");
+        stepId = Integer.parseInt(bundle.getString("stepId"));
+
         getActivity().setTitle(bundle.getString("shortDescription"));
 
 //        // bind recyclerView with XML recyclerView declaration
@@ -132,7 +141,22 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
         recipeStepDescription = rootView.findViewById(R.id.recipe_step_description);
         nextButton = rootView.findViewById(R.id.button_next);
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextButtonClicked = true;
+                changeStep(nextButtonClicked);
+            }
+        });
         previousButton = rootView.findViewById(R.id.button_prev);
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextButtonClicked = false;
+                changeStep(nextButtonClicked);
+            }
+        });
 
         bindViews();
 
@@ -149,6 +173,27 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 //                    load(bundle.getString("thumbnailUrl")).
 //                    into(mPlayerView);
 
+    }
+
+    public void changeStep(boolean nextButtonClicked) {
+
+
+
+        if(nextButtonClicked) { // if next button was clicked ie: nextButtonClicked=true
+
+            // replace text with step at position of stepID + 1
+            if(stepId < steps.size() - 1) {
+                stepId++;
+                recipeStepDescription.setText(steps.get(stepId).getDescription());
+                getActivity().setTitle(steps.get(stepId).getShortDescription());
+            } else {
+                // go back to recipe details - tell host activity to replace fragment
+            }
+
+
+        } else {
+            // replace text with step at position of stepID - 1
+        }
     }
 
     /**
@@ -211,15 +256,16 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     private void releasePlayer() {
 
         // destroy notification when activity is destroyed
-        mNotificationManager.cancelAll();
+        //mNotificationManager.cancelAll();
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         releasePlayer();
     }
 
@@ -266,6 +312,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
      * PlaybackState.
      * @param state The PlaybackState of the MediaSession.
      */
+    @SuppressWarnings("deprecation")
     private void showNotification(PlaybackStateCompat state) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext());
 
@@ -296,7 +343,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         builder.setContentTitle("test")
                 .setContentText("This is a test")
                 .setContentIntent(contentPendingIntent)
-
+                .setSmallIcon(R.drawable.ic_music_note)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .addAction(restartAction)
                 .addAction(playPauseAction)

@@ -114,8 +114,13 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
         return rootView;
     }
 
+    /*
+    * Method to pass date from recipe details to recipe step fragment
+    * */
     @Override
     public void invokeRecipeStepCallback(int position, Step step) {
-        mCallback.onRecipeStepSelected(position, step);
+        // pass in steps arraylist
+        //mCallback.onRecipeStepSelected(position, step, steps);
+        mCallback.onRecipeStepSelected(position, step, recipe);
     }
 }
