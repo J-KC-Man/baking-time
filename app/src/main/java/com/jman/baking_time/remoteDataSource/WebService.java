@@ -26,6 +26,11 @@ public interface WebService {
     * to map the json properties to java properties. This includes list and field names.
     *
     * */
-    @GET("May/59121517_baking")
-    Call<List<Recipe>> getRecipesJson ();
+
+    /*
+    * Methods declared on an interface represent a single remote API endpoint.
+    * Annotations describe how the method maps to an HTTP request.
+    * */
+    @GET("topher/2017/May/59121517_baking/baking.json")
+    Call<List<Recipe>> getRecipesJson();
 }

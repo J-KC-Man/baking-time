@@ -1,5 +1,6 @@
 package com.jman.baking_time.ui;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,11 @@ import com.google.gson.reflect.TypeToken;
 import com.jman.baking_time.R;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Recipe;
+import com.jman.baking_time.repository.RecipeRepository;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.jman.baking_time.data.JsonData.json;
@@ -21,10 +24,17 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
 
     private  RecipesFragment recipesFragment;
 
+    LiveData<List<Recipe>> recipes;
+
+    private RecipeRepository repo = new RecipeRepository();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+       recipes = repo.getRecipes();
+
 
         // create new instance of fragment and display using fragment manager
         recipesFragment = new RecipesFragment();

@@ -9,11 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Justin on 29/08/2018.
  *
  * Builds the query URL from the WebService interface
+ * and creates a retrofit object, known as the retrofit client,
+ * to make network requests to consume the api
  */
 
 public class WebServiceGenerator {
 
-    private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/";
+    private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
 
     public static WebService createService() {
 
@@ -27,6 +29,7 @@ public class WebServiceGenerator {
 // add logging as last interceptor
         httpClient.addInterceptor(logging);  // <-- this is the important line!
 
+        // create retrofit object
         Retrofit builder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
