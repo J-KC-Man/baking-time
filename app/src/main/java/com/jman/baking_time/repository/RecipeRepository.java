@@ -43,11 +43,14 @@ public class RecipeRepository {
         networkRequest.enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                 data.setValue(response.body());
 
-              // recipes =  response.body();
-                //recipes.size();
-                Log.d("response", response.body().toString());
+                if(response.isSuccessful()) {
+                    data.setValue(response.body());
+
+                    // recipes =  response.body();
+                    //recipes.size();
+                    Log.d("response", response.body().toString());
+                }
 
             }
 
