@@ -34,9 +34,9 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private RecipesFragment mFragment;
 
-    public RecipesRecyclerViewAdapter(List<Recipe> recipes, Context mContext, RecipesFragment fragment) {
+    public RecipesRecyclerViewAdapter(Context mContext, RecipesFragment fragment) {
         this.mFragment = fragment;
-        this.recipes = recipes;
+        //this.recipes = recipes;
         this.mContext = mContext; // important so the adapter knows which activity it is attached to
     }
 

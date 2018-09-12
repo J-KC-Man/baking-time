@@ -1,6 +1,9 @@
 package com.jman.baking_time.ui;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,10 +22,14 @@ import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
 import com.jman.baking_time.interfaces.CallbackInvoker;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Recipe;
+import com.jman.baking_time.viewmodels.RecipesViewModel;
+import com.jman.baking_time.viewmodels.RecipesViewModelFactory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static com.jman.baking_time.data.JsonData.json;
 
@@ -39,6 +46,9 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
     private RecipesRecyclerViewAdapter mAdapter;
 
+    /* Viewmodel*/
+    private RecipesViewModel mRecipesViewModel;
+
     // list of recipes
     private List<Recipe> recipes;
 
@@ -48,10 +58,6 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
     private OnRecipeClickListener mCallback;
 
-//    public OnRecipeClickListener getmCallback() {
-//        return mCallback;
-//    }
-
     /*
     * Tell host activity to call its onRecipeSelected(position) implementation
     * */
@@ -59,10 +65,6 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
     public void invokeCallback(int position) {
         mCallback.onRecipeSelected(position);
     }
-
-//    public interface OnRecipeClickListener {
-//        void onRecipeSelected(int position); // position that user click in RecyclerView
-//    }
 
     /*
     * Make sure container activity has implemented the callback
@@ -94,8 +96,8 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipes_list, container, false);
 
-        Type recipesListType = new TypeToken<List<Recipe>>(){}.getType();
-        recipes = new Gson().fromJson(json, recipesListType);
+//        Type recipesListType = new TypeToken<List<Recipe>>(){}.getType();
+//        recipes = new Gson().fromJson(json, recipesListType);
 
         // bind recyclerView with XML recyclerView declaration
         recipesRecyclerView = rootView.findViewById(R.id.recipeList_RecyclerView);
@@ -103,8 +105,9 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
         // attach recyclerView and adapter
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Create an adapter for that cursor to display the data
-        mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
+        // Create an adapter to display the data
+       // mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
+        mAdapter = new RecipesRecyclerViewAdapter(getContext(), RecipesFragment.this);
 
         // divider line at bottom of the recipe view
         recipesRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -114,5 +117,33 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
 
         return rootView;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        createRecipesViewModel();
+
+        mRecipesViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+                // update UI
+                // Create an adapter to display the data
+               // mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
+                mAdapter.updateReviewsUI(recipes);
+            }
+        });
+    }
+
+    @Inject
+    RecipesViewModelFactory factory;
+    public RecipesViewModel createRecipesViewModel() {
+
+        // creates or retrieves existing viewmodel
+        // and associates fragment with viewmodel with Activity Scope so it can be shared with other fragments
+
+        return mRecipesViewModel = ViewModelProviders.of(getActivity(),factory).get(RecipesViewModel.class);
     }
 }

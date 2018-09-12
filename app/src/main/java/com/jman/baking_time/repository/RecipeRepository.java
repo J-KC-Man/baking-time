@@ -27,7 +27,7 @@ public class RecipeRepository {
 
     /* The client to implement the interface in retrofit object to make requests*/
     private WebService apiClient;
-    List<Recipe> recipes;
+
 
     public LiveData<List<Recipe>> getRecipes() {
 

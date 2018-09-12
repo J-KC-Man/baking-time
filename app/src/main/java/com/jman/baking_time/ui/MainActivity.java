@@ -24,16 +24,11 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
 
     private  RecipesFragment recipesFragment;
 
-    LiveData<List<Recipe>> recipes;
-
-    private RecipeRepository repo = new RecipeRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-       recipes = repo.getRecipes();
 
 
         // create new instance of fragment and display using fragment manager
