@@ -58,6 +58,9 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
     private OnRecipeClickListener mCallback;
 
+    @Inject
+    RecipesViewModelFactory factory;
+
     /*
     * Tell host activity to call its onRecipeSelected(position) implementation
     * */
@@ -137,13 +140,12 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
         });
     }
 
-    @Inject
-    RecipesViewModelFactory factory;
-    public RecipesViewModel createRecipesViewModel() {
+
+    public void createRecipesViewModel() {
 
         // creates or retrieves existing viewmodel
         // and associates fragment with viewmodel with Activity Scope so it can be shared with other fragments
 
-        return mRecipesViewModel = ViewModelProviders.of(getActivity(),factory).get(RecipesViewModel.class);
+        mRecipesViewModel = ViewModelProviders.of(getActivity(),factory).get(RecipesViewModel.class);
     }
 }
