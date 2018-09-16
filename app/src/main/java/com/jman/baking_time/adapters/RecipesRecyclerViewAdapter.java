@@ -34,9 +34,9 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private RecipesFragment mFragment;
 
-    public RecipesRecyclerViewAdapter(Context mContext, RecipesFragment fragment) {
+    public RecipesRecyclerViewAdapter(List<Recipe> recipes, Context mContext, RecipesFragment fragment) {
         this.mFragment = fragment;
-        //this.recipes = recipes;
+        this.recipes = recipes;
         this.mContext = mContext; // important so the adapter knows which activity it is attached to
     }
 
@@ -61,10 +61,13 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return recipes.size();
+        if(recipes != null) {
+            return recipes.size();
+        }
+        return 0;
     }
 
-    public void updateReviewsUI(List<Recipe> recipes) {
+    public void updateRecipeListUI(List<Recipe> recipes) {
         this.recipes = recipes;
         notifyDataSetChanged();
     }
@@ -107,6 +110,7 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 //                );
 
                 // trigger click listener callback implemented in fragment class
+                // to tell fragment of the click event
                 mFragment.invokeCallback(position);
 
 

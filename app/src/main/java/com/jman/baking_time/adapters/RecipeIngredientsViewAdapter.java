@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jman.baking_time.R;
 import com.jman.baking_time.models.Ingredient;
+import com.jman.baking_time.models.Recipe;
 
 import java.util.List;
 
@@ -57,6 +58,11 @@ public class RecipeIngredientsViewAdapter extends RecyclerView.Adapter<RecyclerV
             return 0;
         }
         return ingredients.size();
+    }
+
+    public void updateRecipeIngredientsUI(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+        notifyDataSetChanged();
     }
 
     class IngredientsViewHolder extends RecyclerView.ViewHolder {

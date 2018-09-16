@@ -52,19 +52,19 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
         // start REcipeDetailHost Activity and pass bundle to host actvity to pass down to the fragment
 
         // init recipe object to get recipe info to pass in a Bundle
-        Recipe recipe = recipesFragment.getRecipes().get(position);
-
-        Recipe recipeDetail = new Recipe(
-                recipe.getIngredients(),
-                recipe.getSteps()
-        );
+//        Recipe recipe = recipesFragment.getRecipes().get(position);
+//
+//        Recipe recipeDetail = new Recipe(
+//                recipe.getIngredients(),
+//                recipe.getSteps()
+//        );
 
         // launch intent and pass in bundle to RecipeDetailHostActivity
         // this bundle needs to have both of the arrays for a recipe
         Intent intent = new Intent(MainActivity.this, RecipeDetailHostActivity.class);
 
 
-        intent.putExtra("recipeDetails", recipeDetail);
+        //intent.putExtra("recipeDetails", recipeDetail);
         startActivity(intent);
     }
 }

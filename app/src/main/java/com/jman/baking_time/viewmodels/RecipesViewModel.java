@@ -1,6 +1,7 @@
 package com.jman.baking_time.viewmodels;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
@@ -15,10 +16,12 @@ import javax.inject.Inject;
 public class RecipesViewModel extends ViewModel {
 
     private LiveData<List<Recipe>> recipes;
+
+    private final MutableLiveData<Recipe> selectedRecipe = new MutableLiveData<>();
     private RecipeRepository recipeRepository;
 
     // Instructs Dagger 2 to provide the RecipeRepository parameter.
-    @Inject
+    //@Inject
     public RecipesViewModel(RecipeRepository recipeRepository) {
 
         this.recipeRepository = recipeRepository;
@@ -33,5 +36,11 @@ public class RecipesViewModel extends ViewModel {
         return this.recipes;
     }
 
+    public MutableLiveData<Recipe> getSelectedRecipe() {
+        return selectedRecipe;
+    }
 
+    public void setSelectedRecipe(Recipe recipe) {
+        selectedRecipe.setValue(recipe);
+    }
 }

@@ -66,6 +66,11 @@ public class RecipeStepsViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return steps.size();
     }
 
+    public void updateRecipeStepsUI(List<Step> steps) {
+        this.steps = steps;
+        notifyDataSetChanged();
+    }
+
     class DescriptionViewHolder extends RecyclerView.ViewHolder {
 
 

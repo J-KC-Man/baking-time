@@ -12,7 +12,7 @@ public class RecipesViewModelFactory implements ViewModelProvider.Factory {
 
     final RecipeRepository recipeRepository;
 
-    @Inject
+   // @Inject
     public RecipesViewModelFactory(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }

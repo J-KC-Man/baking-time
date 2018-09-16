@@ -22,6 +22,7 @@ import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
 import com.jman.baking_time.interfaces.CallbackInvoker;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Recipe;
+import com.jman.baking_time.repository.RecipeRepository;
 import com.jman.baking_time.viewmodels.RecipesViewModel;
 import com.jman.baking_time.viewmodels.RecipesViewModelFactory;
 
@@ -46,20 +47,24 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
     private RecipesRecyclerViewAdapter mAdapter;
 
-    /* Viewmodel*/
-    private RecipesViewModel mRecipesViewModel;
+
 
     // list of recipes
     private List<Recipe> recipes;
-
-    public List<Recipe> getRecipes() {
-        return this.recipes;
-    }
+//
+//    public List<Recipe> getRecipes() {
+//        return this.recipes;
+//    }
 
     private OnRecipeClickListener mCallback;
 
-    @Inject
+    /* Viewmodel*/
+    private RecipesViewModel mRecipesViewModel;
+
+   // @Inject
     RecipesViewModelFactory factory;
+
+    RecipeRepository recipeRepository;
 
     /*
     * Tell host activity to call its onRecipeSelected(position) implementation
@@ -102,6 +107,10 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 //        Type recipesListType = new TypeToken<List<Recipe>>(){}.getType();
 //        recipes = new Gson().fromJson(json, recipesListType);
 
+        recipeRepository = new RecipeRepository();
+
+        factory = new RecipesViewModelFactory(recipeRepository);
+
         // bind recyclerView with XML recyclerView declaration
         recipesRecyclerView = rootView.findViewById(R.id.recipeList_RecyclerView);
 
@@ -110,7 +119,7 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
         // Create an adapter to display the data
        // mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
-        mAdapter = new RecipesRecyclerViewAdapter(getContext(), RecipesFragment.this);
+        mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
 
         // divider line at bottom of the recipe view
         recipesRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -132,10 +141,7 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
         mRecipesViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
-                // update UI
-                // Create an adapter to display the data
-               // mAdapter = new RecipesRecyclerViewAdapter(recipes, getContext(), RecipesFragment.this);
-                mAdapter.updateReviewsUI(recipes);
+                mAdapter.updateRecipeListUI(recipes);
             }
         });
     }
