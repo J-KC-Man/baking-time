@@ -184,16 +184,44 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             // replace text with step at position of stepID + 1
             if(stepId < steps.size() - 1) {
                 stepId++;
+                // may need to replace the fragment using the activity
                 recipeStepDescription.setText(steps.get(stepId).getDescription());
                 getActivity().setTitle(steps.get(stepId).getShortDescription());
+
+                // reinit exoplayer
+                reInitPlayer(steps.get(stepId).getVideoURL());
+
+
             } else {
                 // go back to recipe details - tell host activity to replace fragment
+                // or remove activity from backstack
             }
 
 
         } else {
             // replace text with step at position of stepID - 1
+
+            if(stepId > 0) {
+                stepId--;
+                recipeStepDescription.setText(steps.get(stepId).getDescription());
+                getActivity().setTitle(steps.get(stepId).getShortDescription());
+
+                // reinit exoplayer
+                reInitPlayer(steps.get(stepId).getVideoURL());
+            } else {
+                // go back to recipe detail
+            }
+
         }
+    }
+
+    public void reInitPlayer(String url) {
+        if (mExoPlayer != null) {
+            releasePlayer();
+        }
+
+        initializeMediaSession();
+        initializePlayer(Uri.parse(url));
     }
 
     /**
