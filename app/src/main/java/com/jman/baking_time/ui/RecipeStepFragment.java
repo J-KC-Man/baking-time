@@ -68,6 +68,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
     private List<Step> steps;
     int stepId;
+    private String recipeName;
 
     private Bundle bundle;
 
@@ -114,6 +115,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         View rootView = inflater.inflate(R.layout.recipe_step_list_item, container, false);
 
         bundle = getArguments();
+        recipeName = bundle.getString("recipeName");
 
         steps = bundle.getParcelableArrayList("steps");
         stepId = Integer.parseInt(bundle.getString("stepId"));
@@ -194,11 +196,15 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
             } else {
                 // go back to recipe details - tell host activity to replace fragment
-                // or remove activity from backstack
+                // by removing activity from backstack - this needs addToBackStack() to work
+                if (getFragmentManager().getBackStackEntryCount() > 0) {
+                    getFragmentManager().popBackStack();
+                    getActivity().setTitle(recipeName);
+                }
             }
 
 
-        } else {
+        } else { // if Previous button clicked
             // replace text with step at position of stepID - 1
 
             if(stepId > 0) {
@@ -210,6 +216,9 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
                 reInitPlayer(steps.get(stepId).getVideoURL());
             } else {
                 // go back to recipe detail
+                if (getFragmentManager().getBackStackEntryCount() > 0) {
+                    getFragmentManager().popBackStack();
+                }
             }
 
         }

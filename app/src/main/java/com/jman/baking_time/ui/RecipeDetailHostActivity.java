@@ -58,7 +58,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         Bundle arguments = new Bundle();
 
         arguments.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
-        //arguments.putParcelable("recipe", recipe);
+        arguments.putString("recipeName", recipe.getName());
         arguments.putString("stepId", step.getId());
         arguments.putString("videoUrl", step.getVideoURL());
         arguments.putString("thumbnailUrl", step.getThumbnailURL());
