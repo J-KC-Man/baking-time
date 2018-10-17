@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="15dp"
+    tools:context="com.jman.baking_time.ui.RecipeDetailHostActivity">
+
+
+    <FrameLayout
+        android:id="@+id/recipeDetail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray" />
+
+    <!--This is needed to add the stpes fragment into a different container
+    to enable master detail flow side by side views, otherwise the fragments
+    will be in the same container-->
+    <FrameLayout
+        android:id="@+id/recipeStep_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside" />
+
+</LinearLayout>
