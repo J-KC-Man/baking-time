@@ -98,18 +98,8 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             int position = getAdapterPosition(); // gets item position
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
 
-//                // init recipe object to get recipe info to pass in a Bundle
-//                Recipe recipe = recipes.get(position);
-//
-//                Recipe recipeDetail = new Recipe(
-//                        recipe.getIngredients(),
-//                        recipe.getSteps()
-//                );
-
                 // trigger click listener callback implemented in fragment class
                 mFragment.invokeCallback(position);
-
-
             }
         }
     } // end of viewholder class

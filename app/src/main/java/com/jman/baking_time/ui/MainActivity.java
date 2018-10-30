@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       recipes = repo.getRecipes();
+      // recipes = repo.getRecipes();
 
 
         // create new instance of fragment and display using fragment manager
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
     * */
     @Override
     public void onRecipeSelected(int position) {
-        // start REcipeDetailHost Activity and pass bundle to host actvity to pass down to the fragment
+        // start RecipeDetailHost Activity and pass bundle to host actvity to pass down to the fragment
 
         // init recipe object to get recipe info to pass in a Bundle
         Recipe recipe = recipesFragment.getRecipes().get(position);

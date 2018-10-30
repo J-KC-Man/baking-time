@@ -86,6 +86,18 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
 
+    private boolean mIsTwoPane;
+
+    public boolean checkIfLandscape() {
+        if(getActivity().findViewById(R.id.activity_recipe_detail_landscape) != null) {
+            mIsTwoPane = true;
+        } else {
+            mIsTwoPane = false;
+        }
+        return mIsTwoPane;
+    }
+
+
 //    /*
 //   * Make sure container activity has implemented the callback
 //   * The context is the host activity that has implemented the OnRecipeClickListener
@@ -115,12 +127,15 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         View rootView = inflater.inflate(R.layout.recipe_step_list_item, container, false);
 
         bundle = getArguments();
-        recipeName = bundle.getString("recipeName");
+//        recipeName = bundle.getString("recipeName");
 
         steps = bundle.getParcelableArrayList("steps");
         stepId = Integer.parseInt(bundle.getString("stepId"));
+        //stepId = Integer.parseInt(steps.get);
 
         getActivity().setTitle(bundle.getString("shortDescription"));
+
+        //uses recyclerview with step detail fragment
 
 //        // bind recyclerView with XML recyclerView declaration
 //        recipeStepRecyclerView = rootView.findViewById(R.id.recipeStep_RecyclerView);
@@ -152,6 +167,14 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             }
         });
         previousButton = rootView.findViewById(R.id.button_prev);
+
+
+        // if in landscape make previous button disappear
+        // when screen is first created
+            if(checkIfLandscape() == true && stepId == 0) {
+                previousButton.setVisibility(View.GONE);
+            }
+
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +209,16 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             // replace text with step at position of stepID + 1
             if(stepId < steps.size() - 1) {
                 stepId++;
+
+                // make next button disappear on last step
+                if(stepId == steps.size() - 1 && checkIfLandscape() == true) {
+                    nextButton.setVisibility(View.GONE);
+                }
+
+                // make previous button appear on subsequent steps
+                if(stepId > 0 && checkIfLandscape() == true) {
+                    previousButton.setVisibility(View.VISIBLE);
+                }
                 // may need to replace the fragment using the activity
                 recipeStepDescription.setText(steps.get(stepId).getDescription());
                 getActivity().setTitle(steps.get(stepId).getShortDescription());
@@ -209,14 +242,26 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
             if(stepId > 0) {
                 stepId--;
+
+                // make next button appear again for previous steps
+                if(checkIfLandscape() == true && nextButton.getVisibility() == View.GONE) {
+                    nextButton.setVisibility(View.VISIBLE);
+                }
+
+                // make 'previous' button disappear on first step
+                if(stepId == 0 && checkIfLandscape() == true) {
+                    previousButton.setVisibility(View.GONE);
+                }
+
                 recipeStepDescription.setText(steps.get(stepId).getDescription());
                 getActivity().setTitle(steps.get(stepId).getShortDescription());
 
                 // reinit exoplayer
                 reInitPlayer(steps.get(stepId).getVideoURL());
+
             } else {
                 // go back to recipe detail
-                if (getFragmentManager().getBackStackEntryCount() > 0) {
+                if (getFragmentManager().getBackStackEntryCount() > 0 && checkIfLandscape() == false) {
                     getFragmentManager().popBackStack();
                 }
             }

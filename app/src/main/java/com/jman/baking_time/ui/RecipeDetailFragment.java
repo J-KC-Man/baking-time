@@ -11,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jman.baking_time.R;
-import com.jman.baking_time.adapters.RecipeDetailRecyclerViewAdapter;
 import com.jman.baking_time.adapters.RecipeIngredientsViewAdapter;
-import com.jman.baking_time.adapters.RecipeStepRecyclerViewAdapter;
 import com.jman.baking_time.adapters.RecipeStepsViewAdapter;
 import com.jman.baking_time.interfaces.IRecipeStepCallbackInvoker;
 import com.jman.baking_time.interfaces.OnRecipeStepClickListener;
@@ -33,7 +31,6 @@ import java.util.List;
 public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbackInvoker {
 
     // set up RV and Adapter
-    private RecyclerView recipeDetailRecyclerView;
     private RecyclerView recipeIngredientsRecyclerView;
     private RecyclerView recipeStepRecyclerView;
 
@@ -41,10 +38,10 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
     private RecipeIngredientsViewAdapter recipeIngredientsViewAdapter;
     private RecipeStepsViewAdapter recipeStepsViewAdapter;
 
-    private RecipeDetailRecyclerViewAdapter mAdapter;
-
+    /* Used in invokeRecipeStepCallback */
     private Recipe recipe;
 
+    private Bundle bundle;
     private List<Ingredient> ingredients;
     private List<Step> steps;
 
@@ -77,21 +74,11 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
-        recipe = getActivity().getIntent().getExtras().getParcelable("recipeDetails");
-        ingredients = recipe.getIngredients();
-        steps = recipe.getSteps();
 
-//        recipeDetailRecyclerView = rootView.findViewById(R.id.recipeDetail_RecyclerView);
-//        recipeDetailRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//
-//        // Create an adapter for that cursor to display the data
-//        mAdapter = new RecipeDetailRecyclerViewAdapter(ingedients, steps, getContext(), RecipeDetailFragment.this);
-//
-//        // divider line at bottom of the recipe view
-//        recipeDetailRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-//
-//        // Link the adapter to the RecyclerView
-//        recipeDetailRecyclerView.setAdapter(mAdapter);
+        bundle = getArguments();
+        ingredients = bundle.getParcelableArrayList("ingredients");
+        steps = bundle.getParcelableArrayList("steps");
+
 
         // set up ingredients RV
         // Create an adapter for that cursor to display the data
@@ -120,7 +107,7 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
     @Override
     public void invokeRecipeStepCallback(int position, Step step) {
         // pass in steps arraylist
-        //mCallback.onRecipeStepSelected(position, step, steps);
-        mCallback.onRecipeStepSelected(position, step, recipe);
+        mCallback.onRecipeStepSelected(position, step, steps);
+        //mCallback.onRecipeStepSelected(position, step, recipe);
     }
 }

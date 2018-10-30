@@ -12,6 +12,6 @@ import java.util.List;
 public interface OnRecipeStepClickListener {
 
     /* Pass in position and step info when step button is clicked */
-   // void onRecipeStepSelected(int position, Step step, List<Step> steps);
-    void onRecipeStepSelected(int position, Step step, Recipe recipe);
+    void onRecipeStepSelected(int position, Step step, List<Step> steps);
+   // void onRecipeStepSelected(int position, Step step, Recipe recipe);
 }
