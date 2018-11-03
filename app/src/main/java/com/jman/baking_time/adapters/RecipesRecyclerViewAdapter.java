@@ -64,7 +64,7 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return recipes.size();
     }
 
-    public void updateReviewsUI(List<Recipe> recipes) {
+    public void updateRecipesUI(List<Recipe> recipes) {
         this.recipes = recipes;
         notifyDataSetChanged();
     }
