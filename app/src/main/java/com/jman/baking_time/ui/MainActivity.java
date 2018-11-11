@@ -1,15 +1,19 @@
 package com.jman.baking_time.ui;
 
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jman.baking_time.R;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
+import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Recipe;
 
 
@@ -20,6 +24,10 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements OnRecipeClickListener {
+
+    // To save data in default shared prefs for widget
+    public static final String RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF = "recipe_ingredients";
+    public static final String RECIPE_NAME_DEFAULT_SHARED_PREF = "recipe_name";
 
     private  RecipesFragment recipesFragment;
 
@@ -42,6 +50,20 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
     }
 
     /*
+    * Saves selected recipe to default shared prefs
+    * */
+    private void setRecipeWidgetIngredientsList(List<Ingredient> ingredients, String recipeName) {
+        Gson gson = new Gson();
+        String jsonIngredients = gson.toJson(ingredients);
+        Log.v("MAIN ACTIVITY GSON", "GSON CONVERSION " + jsonIngredients);
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(RECIPE_NAME_DEFAULT_SHARED_PREF, recipeName);
+        editor.putString(RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF, jsonIngredients);
+        editor.apply();
+    }
+
+    /*
     * handles fragment communication
     * */
     @Override
@@ -55,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
                 recipe.getIngredients(),
                 recipe.getSteps()
         );
+
+        // for Widget
+        setRecipeWidgetIngredientsList(recipe.getIngredients(), recipe.getName());
 
         // launch intent and pass in bundle to RecipeDetailHostActivity
         // this bundle needs to have both of the arrays for a recipe
