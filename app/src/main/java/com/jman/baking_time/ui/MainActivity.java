@@ -15,6 +15,7 @@ import com.jman.baking_time.R;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Recipe;
+import com.jman.baking_time.widget.RecipesWidgetIntentService;
 
 
 import java.io.FileNotFoundException;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
 
         // for Widget
         setRecipeWidgetIngredientsList(recipe.getIngredients(), recipe.getName());
+
+        /* Update the widget with the selected recipe */
+        RecipesWidgetIntentService.startActionUpdateWidget(this);
 
         // launch intent and pass in bundle to RecipeDetailHostActivity
         // this bundle needs to have both of the arrays for a recipe

@@ -38,7 +38,7 @@ public class RecipesWidgetRemoteViewsService extends RemoteViewsService {
 
 
         /*
-        * Context is needed for
+        * Context is needed for instantiating a new factory
         * */
         public GridRemoteViewsFactory(Context applicationContext) {
             this.mContext = applicationContext;
@@ -83,10 +83,16 @@ public class RecipesWidgetRemoteViewsService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int position) {
 
-            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipes_widget_provider);
+            Ingredient ingredient = mIngredients.get(position);
 
+            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipes_widget_gridview_item);
 
-            return null;
+            views.setTextColor(R.id.widget_ingredient_quantity, getResources().getColor(R.color.white));
+
+            views.setTextViewText(R.id.widget_ingredient_quantity, ingredient.getQuantity() +
+                    " " + ingredient.getMeasure() + " " + ingredient.getIngredient());
+
+            return views;
         }
 
         @Override
