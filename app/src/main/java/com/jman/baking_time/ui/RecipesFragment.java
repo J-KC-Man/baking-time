@@ -167,7 +167,7 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Toast.makeText(null,
+                Toast.makeText(getActivity(),
                         "network request failed",
                         Toast.LENGTH_LONG).show();
                 t.getStackTrace();

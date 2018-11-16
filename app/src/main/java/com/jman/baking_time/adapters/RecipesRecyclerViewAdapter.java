@@ -15,7 +15,9 @@ import com.jman.baking_time.models.Recipe;
 import com.jman.baking_time.ui.MainActivity;
 import com.jman.baking_time.ui.RecipeDetailHostActivity;
 import com.jman.baking_time.ui.RecipesFragment;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +84,7 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             servings = itemView.findViewById(R.id.servings);
 
             // todo Init image view and bind it
+            backgroundImage = itemView.findViewById(R.id.recipe_imageview);
 
             itemView.setOnClickListener(RecipeViewHolder.this);
 
@@ -91,6 +94,20 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             // bind views
             name.setText(recipes.get(position).getName());
             servings.setText(recipes.get(position).getServings());
+
+            File f = new File("baking-time\\app\\src\\main\\res\\drawable\\nutella.jpg");
+            String nutellaURL = "https://hips.hearstapps.com/del.h-cdn.co/assets/16/32/1470773544-delish-nutella-cool-whip-pie-1.jpg";
+
+            Picasso picasso = Picasso.get();
+
+            picasso.setLoggingEnabled(true);
+
+            picasso.load(R.drawable.nutella)
+                   // .fit()
+                    .resize(600, 200)
+                    .centerCrop()
+                    .into(backgroundImage);
+
         }
 
         @Override
