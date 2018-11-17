@@ -50,20 +50,9 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
     // list of recipes
     private List<Recipe> recipes;
 
-
-
     private OnRecipeClickListener mCallback;
 
-//    public OnRecipeClickListener getmCallback() {
-//        return mCallback;
-//    }
-
-
-    //private RecipeRepository repo = new RecipeRepository();
-
     private WebService apiClient;
-
-
 
     public List<Recipe> getRecipes() {
         return this.recipes;
