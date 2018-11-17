@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Fragment layout for list of recipes home screen-->
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/recipes_view">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recipeList_RecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:layout_height="match_parent" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recipeList_RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-</ScrollView>
+</LinearLayout>

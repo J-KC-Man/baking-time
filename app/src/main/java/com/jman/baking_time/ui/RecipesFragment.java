@@ -50,20 +50,9 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
     // list of recipes
     private List<Recipe> recipes;
 
-
-
     private OnRecipeClickListener mCallback;
 
-//    public OnRecipeClickListener getmCallback() {
-//        return mCallback;
-//    }
-
-
-    //private RecipeRepository repo = new RecipeRepository();
-
     private WebService apiClient;
-
-
 
     public List<Recipe> getRecipes() {
         return this.recipes;
@@ -167,7 +156,7 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Toast.makeText(null,
+                Toast.makeText(getActivity(),
                         "network request failed",
                         Toast.LENGTH_LONG).show();
                 t.getStackTrace();
