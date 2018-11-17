@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#09C"
-    android:padding="@dimen/widget_margin">
+    android:padding="@dimen/widget_margin"
+    android:id="@+id/recipes_widget_provider_layout">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,9 +21,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="13dp"
-            android:background="#09C"
-
-
             android:textColor="#ffffff"
             android:textSize="24sp"
             android:textStyle="bold|italic" />

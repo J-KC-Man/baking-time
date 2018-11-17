@@ -59,7 +59,8 @@ public class RecipesWidgetProvider extends AppWidgetProvider {
                 appIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_provider_recipe_title, appPendingIntent);
+        //views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntent);
 
         return views;
     }

@@ -54,12 +54,12 @@ public class RecipesWidgetRemoteViewsService extends RemoteViewsService {
         public void onDataSetChanged() {
             // get the data from persistent datastore
             Gson gson = new Gson();
-            Type ingredientsListType = new TypeToken<List<Ingredient>>(){}.getType();
-            mIngredients = gson.fromJson(PreferenceManager
+            String ingredientsJson = PreferenceManager
                     .getDefaultSharedPreferences(mContext)
                     .getString(MainActivity.
-                            RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF,null)
-                    , ingredientsListType);
+                            RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF,null);
+            Type ingredientsListType = new TypeToken<List<Ingredient>>(){}.getType();
+            mIngredients = gson.fromJson(ingredientsJson, ingredientsListType);
         }
 
         @Override

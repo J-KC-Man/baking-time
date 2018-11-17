@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,11 +58,19 @@ public class MainActivity extends AppCompatActivity implements OnRecipeClickList
         Gson gson = new Gson();
         String jsonIngredients = gson.toJson(ingredients);
         Log.v("MAIN ACTIVITY GSON", "GSON CONVERSION " + jsonIngredients);
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(RECIPE_NAME_DEFAULT_SHARED_PREF, recipeName);
-        editor.putString(RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF, jsonIngredients);
-        editor.apply();
+
+//        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(RECIPE_NAME_DEFAULT_SHARED_PREF, recipeName);
+//        editor.putString(RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF, jsonIngredients);
+//        editor.apply();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences
+                .edit()
+                .putString(RECIPE_NAME_DEFAULT_SHARED_PREF, recipeName)
+                .putString(RECIPE_INGREDIENTS_DEFAULT_SHARED_PREF, jsonIngredients)
+                .apply();
     }
 
     /*
