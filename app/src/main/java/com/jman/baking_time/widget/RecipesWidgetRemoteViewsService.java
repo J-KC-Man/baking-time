@@ -21,8 +21,7 @@ import java.util.List;
 * */
 public class RecipesWidgetRemoteViewsService extends RemoteViewsService {
 
-    // Collections.emptyList() returns immutable list, and avoids creating a new object and NPEs
-    private List<Ingredient> mIngredients = Collections.emptyList();
+
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -36,6 +35,8 @@ public class RecipesWidgetRemoteViewsService extends RemoteViewsService {
 
         private Context mContext;
 
+        // Collections.emptyList() returns immutable list, and avoids creating a new object and NPEs
+        private List<Ingredient> mIngredients = Collections.emptyList();
 
         /*
         * Context is needed for instantiating a new factory
@@ -63,7 +64,7 @@ public class RecipesWidgetRemoteViewsService extends RemoteViewsService {
 
         @Override
         public void onDestroy() {
-
+            mIngredients = null;
         }
 
         @Override
