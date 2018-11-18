@@ -24,6 +24,7 @@ import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Recipe;
 import com.jman.baking_time.remoteDataSource.WebService;
 import com.jman.baking_time.remoteDataSource.WebServiceGenerator;
+import com.jman.baking_time.testing.SimpleIdlingResource;
 
 
 import java.lang.reflect.Type;
@@ -53,6 +54,8 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
     private OnRecipeClickListener mCallback;
 
     private WebService apiClient;
+
+    SimpleIdlingResource idlingResource;
 
     public List<Recipe> getRecipes() {
         return this.recipes;
@@ -110,6 +113,26 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
         // attach recyclerView and adapter
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // don't init idlingResource too early (before fragment is instantiated)
+        // otherwise you get a null exception
+        idlingResource = (SimpleIdlingResource)((MainActivity)getActivity()).getIdlingResource();
+
+        // protect against NPE
+        if (idlingResource != null) {
+            /*
+            * set idle to false
+            * idle means:
+
+                -No UI events in the current message queue
+                -No more tasks in the default AsyncTask thread pool
+
+                idle is false as there are tasks or events that are happening
+                and any testing should be on halt until these processes finish.
+            *
+            * */
+            idlingResource.setIdleState(false);
+        }
+
         loadRecipesData();
 
         // Create an adapter for that cursor to display the data
@@ -152,6 +175,15 @@ public class RecipesFragment extends Fragment implements CallbackInvoker {
                     }
                 }
 
+                // for Espresso testing
+                /*
+                * idle set to true since:
+                *   -No UI events in the current message queue
+                    -No more tasks in the default AsyncTask thread pool, api call has finished
+                * */
+                if (idlingResource != null) {
+                    idlingResource.setIdleState(true);
+                }
             }
 
             @Override

@@ -10,16 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="2dp">
 
         <FrameLayout
             android:id="@+id/recipes_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerInside" />
-
-
-
 
     </LinearLayout>
 
