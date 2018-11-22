@@ -85,7 +85,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         // Fragment transaction
         // dont add to backstack as it enables easier up navigation
         fragmentManager.beginTransaction()
-                .add(R.id.recipeDetail_container, recipeDetailFragment)
+                .replace(R.id.recipeDetail_container, recipeDetailFragment)
                 .commit();
     }
 
