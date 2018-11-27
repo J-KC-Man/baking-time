@@ -30,6 +30,9 @@ import java.util.List;
 
 public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbackInvoker {
 
+    private int someStateValue;
+    private final String RECIPE_DETAIL_FRAGMENT_KEY = "RecipeDetailFragment";
+
     // set up RV and Adapter
     private RecyclerView recipeIngredientsRecyclerView;
     private RecyclerView recipeStepRecyclerView;
@@ -74,6 +77,11 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
+        // there is something in savedInstanceState, could be fragment
+        if (savedInstanceState != null) {
+            someStateValue = savedInstanceState.getInt(RECIPE_DETAIL_FRAGMENT_KEY);
+            // Do something with value if needed
+        }
 
         bundle = getArguments();
         ingredients = bundle.getParcelableArrayList("ingredients");
@@ -101,6 +109,14 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
         return rootView;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // retain this fragment when activity is re-initialized
+        setRetainInstance(true);
+    }
+
     /*
     * Method to pass date from recipe details to recipe step fragment
     * */
@@ -109,5 +125,11 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
         // pass in steps arraylist
         mCallback.onRecipeStepSelected(position, step, steps);
         //mCallback.onRecipeStepSelected(position, step, recipe);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(RECIPE_DETAIL_FRAGMENT_KEY, someStateValue);
+        super.onSaveInstanceState(outState);
     }
 }

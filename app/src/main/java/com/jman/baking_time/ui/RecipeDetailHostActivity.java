@@ -25,6 +25,8 @@ import java.util.List;
 
 public class RecipeDetailHostActivity extends AppCompatActivity implements OnRecipeStepClickListener {
 
+    private final String SIMPLE_FRAGMENT_TAG = "myfragmenttag";
+
     FragmentManager fragmentManager;
 
     private boolean mTwoPane;
@@ -32,6 +34,8 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
     private Recipe recipe;
     private List<Ingredient> ingredients;
     private List<Step> steps;
+
+    RecipeDetailFragment recipeDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +52,11 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         arguments.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) ingredients);
         arguments.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) steps);
 
+        // if in landscape
         if(findViewById(R.id.activity_recipe_detail_landscape) != null) {
             mTwoPane = true;
 
-            if(savedInstanceState == null) {
+            if(savedInstanceState == null) { // if nothing has been saved
                 // create the recipe step fragment
                 fragmentManager = getSupportFragmentManager();
 
@@ -70,23 +75,40 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
                         .add(R.id.recipeStep_container, recipeStepFragmentLand)
                         .commit();
             }
-        } else {
+        }
+        else { // if not in landscape
             mTwoPane = false;
+
         }
 
-        // create new instance of fragment and display using fragment manager
-        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        if (savedInstanceState != null) { // saved instance state, fragment may exist
+            // look up the instance that already exists by tag
+            recipeDetailFragment = (RecipeDetailFragment)
+                    getSupportFragmentManager().findFragmentByTag(SIMPLE_FRAGMENT_TAG);
+        } else if (recipeDetailFragment == null) {
+            // only create fragment if they haven't been instantiated already
+            // create new instance of fragment
+            recipeDetailFragment = new RecipeDetailFragment();
 
-        recipeDetailFragment.setArguments(arguments);
+            // create new instance of fragment and display using fragment manager
+            // recipeDetailFragment = new RecipeDetailFragment();
 
-        // use a FragmentManager and transaction to add fragment to the screen
-        fragmentManager = getSupportFragmentManager();
+            recipeDetailFragment.setArguments(arguments);
 
-        // Fragment transaction
-        // dont add to backstack as it enables easier up navigation
-        fragmentManager.beginTransaction()
-                .replace(R.id.recipeDetail_container, recipeDetailFragment)
-                .commit();
+            // use a FragmentManager and transaction to add fragment to the screen
+            fragmentManager = getSupportFragmentManager();
+
+            // Fragment transaction
+            // dont add to backstack as it enables easier up navigation
+            if (!recipeDetailFragment.isInLayout()) {
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.recipeDetail_container, recipeDetailFragment, SIMPLE_FRAGMENT_TAG)
+                        .commit();
+            }
+        }
+
+
     }
 
     @Override
@@ -121,8 +143,20 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
                     .addToBackStack(null)
                     .commit();
         }
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        getSupportFragmentManager().putFragment(outState,
+//                "recipe_detail_fragment", recipeDetailFragment);
 
+        super.onSaveInstanceState(outState);
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        recipeDetailFragment = (RecipeDetailFragment) getSupportFragmentManager().getFragment(
+//                savedInstanceState, "recipe_detail_fragment");
     }
 }
