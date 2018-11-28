@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -81,6 +82,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     /*Exoplayer */
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
+    private long playerPosition;
+    private String videoUri;
 
     private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
@@ -97,22 +100,6 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         return mIsTwoPane;
     }
 
-
-//    /*
-//   * Make sure container activity has implemented the callback
-//   * The context is the host activity that has implemented the OnRecipeClickListener
-//   * interface
-//   * */
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//
-//        try {
-//            mCallback = (OnRecipeClickListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement OnRecipeClickListener");
-//        }
-//    }
 
     /*
     * Mandatory constructor for instantiating the fragment
@@ -131,26 +118,11 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
         steps = bundle.getParcelableArrayList("steps");
         stepId = Integer.parseInt(bundle.getString("stepId"));
-        //stepId = Integer.parseInt(steps.get);
+
 
         getActivity().setTitle(bundle.getString("shortDescription"));
 
-        //uses recyclerview with step detail fragment
-
-//        // bind recyclerView with XML recyclerView declaration
-//        recipeStepRecyclerView = rootView.findViewById(R.id.recipeStep_RecyclerView);
-//
-//        // attach recyclerView and adapter
-//        recipeStepRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//
-//        // Create an adapter to display the data
-//        mAdapter = new RecipeStepRecyclerViewAdapter(step, getContext(), bundle);
-//
-//        // divider line at bottom of the recipe view
-////        recipeStepRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-//
-//        // Link the adapter to the RecyclerView
-//        recipeStepRecyclerView.setAdapter(mAdapter);
+        videoUri = bundle.getString("videoUrl");
 
         // Initialize the player view.
         mPlayerView = rootView.findViewById(R.id.playerView);
@@ -185,10 +157,28 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
         bindViews();
 
+        playerPosition = C.TIME_UNSET; // unknown or unset time or duration
+        if(savedInstanceState != null) {
+            playerPosition = savedInstanceState.getLong("player_position", C.TIME_UNSET);
+        }
+
         initializeMediaSession();
-        initializePlayer(Uri.parse(bundle.getString("videoUrl")));
+        initializePlayer(Uri.parse(videoUri));
+
+
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mExoPlayer != null) {
+            outState.putLong("player_position", playerPosition);
+            outState.putBoolean("player_state", mExoPlayer.getPlayWhenReady());
+        }
+       // releasePlayer();
     }
 
     public void bindViews() {
@@ -293,6 +283,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             String userAgent = Util.getUserAgent(getContext(), "Baking Time");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+            if (playerPosition != C.TIME_UNSET){ mExoPlayer.seekTo(playerPosition); }
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
         }
@@ -344,6 +335,30 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         mExoPlayer = null;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mExoPlayer != null) {
+            playerPosition = mExoPlayer.getCurrentPosition();
+            mExoPlayer.setPlayWhenReady(false);
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+//        releasePlayer();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (videoUri != null)
+            initializePlayer(Uri.parse(videoUri));
+    }
 
     @Override
     public void onDestroy() {

@@ -4,9 +4,11 @@ import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.jman.baking_time.R;
 
+import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
 import com.jman.baking_time.interfaces.OnRecipeStepClickListener;
 import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Recipe;
@@ -25,7 +27,9 @@ import java.util.List;
 
 public class RecipeDetailHostActivity extends AppCompatActivity implements OnRecipeStepClickListener {
 
-    private final String SIMPLE_FRAGMENT_TAG = "myfragmenttag";
+    private static final String TAG = RecipeDetailHostActivity.class.getSimpleName();
+
+    private final String RECIPE_DETAIL_FRAGMENT_TAG = "RecipeDetailFragmentTag";
 
     FragmentManager fragmentManager;
 
@@ -78,36 +82,35 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         }
         else { // if not in landscape
             mTwoPane = false;
-
         }
+
+        // create new instance of fragment and display using fragment manager
+        recipeDetailFragment = new RecipeDetailFragment();
+
+        recipeDetailFragment.setArguments(arguments);
+
+        // use a FragmentManager and transaction to add fragment to the screen
+        fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState != null) { // saved instance state, fragment may exist
             // look up the instance that already exists by tag
             recipeDetailFragment = (RecipeDetailFragment)
-                    getSupportFragmentManager().findFragmentByTag(SIMPLE_FRAGMENT_TAG);
+                    fragmentManager.findFragmentByTag(RECIPE_DETAIL_FRAGMENT_TAG);
         } else if (recipeDetailFragment == null) {
             // only create fragment if they haven't been instantiated already
             // create new instance of fragment
             recipeDetailFragment = new RecipeDetailFragment();
+        }
 
-            // create new instance of fragment and display using fragment manager
-            // recipeDetailFragment = new RecipeDetailFragment();
-
-            recipeDetailFragment.setArguments(arguments);
-
-            // use a FragmentManager and transaction to add fragment to the screen
-            fragmentManager = getSupportFragmentManager();
-
-            // Fragment transaction
-            // dont add to backstack as it enables easier up navigation
+        // Fragment transaction
+        // dont add to backstack as it enables easier back navigation
             if (!recipeDetailFragment.isInLayout()) {
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.recipeDetail_container, recipeDetailFragment, SIMPLE_FRAGMENT_TAG)
+                        .replace(R.id.recipeDetail_container, recipeDetailFragment, RECIPE_DETAIL_FRAGMENT_TAG)
                         .commit();
+                Log.d(TAG, "The recipeDetailFragment got created");
             }
-        }
-
 
     }
 

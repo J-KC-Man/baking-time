@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,6 @@ import java.util.List;
  */
 
 public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbackInvoker {
-
-    private int someStateValue;
-    private final String RECIPE_DETAIL_FRAGMENT_KEY = "RecipeDetailFragment";
 
     // set up RV and Adapter
     private RecyclerView recipeIngredientsRecyclerView;
@@ -75,36 +73,34 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+       // Log.i("RecipeDetailFragment", "onCreateView. Saved state? "+ (savedInstanceState != null));
+
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
-        // there is something in savedInstanceState, could be fragment
-        if (savedInstanceState != null) {
-            someStateValue = savedInstanceState.getInt(RECIPE_DETAIL_FRAGMENT_KEY);
-            // Do something with value if needed
-        }
-
-        bundle = getArguments();
-        ingredients = bundle.getParcelableArrayList("ingredients");
-        steps = bundle.getParcelableArrayList("steps");
+            bundle = getArguments();
+            ingredients = bundle.getParcelableArrayList("ingredients");
+            steps = bundle.getParcelableArrayList("steps");
 
 
-        // set up ingredients RV
-        // Create an adapter for that cursor to display the data
-        // Link the adapter to the RecyclerView
-        recipeIngredientsRecyclerView = rootView.findViewById(R.id.recipeIngredients_RecyclerView);
-        recipeIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recipeIngredientsRecyclerView.setHasFixedSize(true);
+            // set up ingredients RV
+            // Create an adapter for that cursor to display the data
+            // Link the adapter to the RecyclerView
+            recipeIngredientsRecyclerView = rootView.findViewById(R.id.recipeIngredients_RecyclerView);
+            recipeIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recipeIngredientsRecyclerView.setHasFixedSize(true);
 
-        recipeIngredientsViewAdapter = new RecipeIngredientsViewAdapter(ingredients, getContext());
-        recipeIngredientsRecyclerView.setAdapter(recipeIngredientsViewAdapter);
+            recipeIngredientsViewAdapter = new RecipeIngredientsViewAdapter(ingredients, getContext());
+            recipeIngredientsRecyclerView.setAdapter(recipeIngredientsViewAdapter);
 
-        // set up steps RV
-        recipeStepRecyclerView = rootView.findViewById(R.id.recipeSteps_RecyclerView);
-        recipeStepRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recipeStepRecyclerView.setHasFixedSize(true);
+            // set up steps RV
+            recipeStepRecyclerView = rootView.findViewById(R.id.recipeSteps_RecyclerView);
+            recipeStepRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recipeStepRecyclerView.setHasFixedSize(true);
 
-        recipeStepsViewAdapter = new RecipeStepsViewAdapter(steps, getContext(), RecipeDetailFragment.this);
-        recipeStepRecyclerView.setAdapter(recipeStepsViewAdapter);
+            recipeStepsViewAdapter = new RecipeStepsViewAdapter(steps, getContext(), RecipeDetailFragment.this);
+            recipeStepRecyclerView.setAdapter(recipeStepsViewAdapter);
+
 
         return rootView;
     }
@@ -129,7 +125,6 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(RECIPE_DETAIL_FRAGMENT_KEY, someStateValue);
         super.onSaveInstanceState(outState);
     }
 }
