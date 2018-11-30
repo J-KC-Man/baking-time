@@ -2,9 +2,11 @@ package com.jman.baking_time.ui;
 
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.jman.baking_time.R;
 
@@ -45,6 +47,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail_host);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recipe = getIntent().getExtras().getParcelable("recipeDetails");
         ingredients = recipe.getIngredients();
@@ -150,16 +153,23 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        getSupportFragmentManager().putFragment(outState,
-//                "recipe_detail_fragment", recipeDetailFragment);
-
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        recipeDetailFragment = (RecipeDetailFragment) getSupportFragmentManager().getFragment(
-//                savedInstanceState, "recipe_detail_fragment");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
