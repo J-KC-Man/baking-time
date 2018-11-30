@@ -111,6 +111,9 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        Log.i("RecipeStepFragment", "onCreateView. Saved state? "+ (savedInstanceState != null));
+
         View rootView = inflater.inflate(R.layout.recipe_step_list_item, container, false);
 
         bundle = getArguments();
@@ -171,6 +174,12 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setRetainInstance(true);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -184,15 +193,9 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     public void bindViews() {
         recipeStepDescription.setText(bundle.getString("description"));
 
-//            Picasso.with(mContext).
-//                    load(bundle.getString("thumbnailUrl")).
-//                    into(mPlayerView);
-
     }
 
     public void changeStep(boolean nextButtonClicked) {
-
-
 
         if(nextButtonClicked) { // if next button was clicked ie: nextButtonClicked=true
 
@@ -283,6 +286,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             String userAgent = Util.getUserAgent(getContext(), "Baking Time");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+
+            // go to previous seekbar position
             if (playerPosition != C.TIME_UNSET){ mExoPlayer.seekTo(playerPosition); }
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
@@ -330,9 +335,11 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
         // destroy notification when activity is destroyed
         //mNotificationManager.cancelAll();
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+      //  if(mExoPlayer != null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        //}
     }
 
     @Override
@@ -345,26 +352,28 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-//        releasePlayer();
-
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//
+////       releasePlayer();
+//
+//    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (videoUri != null)
+        if (videoUri != null) {
+            initializeMediaSession();
             initializePlayer(Uri.parse(videoUri));
+        }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        releasePlayer();
+//    }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {

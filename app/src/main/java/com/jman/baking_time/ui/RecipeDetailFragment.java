@@ -35,7 +35,6 @@ public class RecipeDetailFragment extends Fragment implements IRecipeStepCallbac
     private RecyclerView recipeIngredientsRecyclerView;
     private RecyclerView recipeStepRecyclerView;
 
-
     private RecipeIngredientsViewAdapter recipeIngredientsViewAdapter;
     private RecipeStepsViewAdapter recipeStepsViewAdapter;
 
