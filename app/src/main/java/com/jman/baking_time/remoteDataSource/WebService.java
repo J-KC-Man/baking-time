@@ -19,9 +19,9 @@ public interface WebService {
     * other half of the request execution mechanism:
     *
     * Converters turn bytes to objects,
-    * Call adapters deal makes the network request and
+    * Call adapters makes the network request and
     * handles request execution (sync/async, threading) using the Call object.
-    * Separate call objects hold the request and response as a MovieResults object.
+    * Separate call objects hold the request and response as a Recipe object.
     * This object includes Java code that Gson looks for
     * to map the json properties to java properties. This includes list and field names.
     *
