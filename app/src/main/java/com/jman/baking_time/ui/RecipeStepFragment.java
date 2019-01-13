@@ -100,24 +100,11 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         return mIsTwoPane;
     }
 
-
     /*
     * Mandatory constructor for instantiating the fragment
     * */
     public RecipeStepFragment() {
     }
-
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
-//        if(savedInstanceState != null) {
-//            playerPosition = savedInstanceState.getLong("player_position", C.TIME_UNSET);
-//        }
-    }
-
 
     @Nullable
     @Override
@@ -176,11 +163,6 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             playerPosition = savedInstanceState.getLong("player_position", C.TIME_UNSET);
         }
 
-        initializeMediaSession();
-        initializePlayer(Uri.parse(videoUri));
-
-
-
         return rootView;
     }
 
@@ -190,10 +172,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (mExoPlayer != null) {
             outState.putLong("player_position", playerPosition);
-            outState.putBoolean("player_state", mExoPlayer.getPlayWhenReady());
-        }
+
     }
 
     public void bindViews() {
@@ -296,7 +276,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             // go to previous seekbar position
             if (playerPosition != C.TIME_UNSET){ mExoPlayer.seekTo(playerPosition); }
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(false); // pause player
         }
     }
 
@@ -341,45 +321,77 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
 
         // destroy notification when activity is destroyed
         //mNotificationManager.cancelAll();
-      //  if(mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
-        //}
-    }
 
+    }
+    /*
+     * NOTE: we initialize the player either in onStart or onResume according to API level
+     * API level 24 introduced support for multiple windows to run side-by-side. So it's safe to initialize our player in onStart
+     * more on Multi-Window Support here https://developer.android.com/guide/topics/ui/multi-window.html
+     * Before API level 24, we wait as long as onResume (to grab system resources) before initializing player
+     *
+     * source for above comment: https://gist.github.com/codeshifu/c26bb8a5f27f94d73b3a4888a509927c
+     */
     @Override
-    public void onPause() {
-        super.onPause();
-        if(mExoPlayer != null) {
-            playerPosition = mExoPlayer.getCurrentPosition(); //get playback position in milliseconds
-            mExoPlayer.setPlayWhenReady(false); // pause player
-            releasePlayer();
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23 || videoUri != null) {
+                initializeMediaSession();
+                initializePlayer(Uri.parse(videoUri));
         }
     }
-
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//
-////       releasePlayer();
-//
-//    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (videoUri != null) {
+        if (Util.SDK_INT <= 23 || videoUri != null) {
             initializeMediaSession();
             initializePlayer(Uri.parse(videoUri));
         }
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        releasePlayer();
-//    }
+
+    /*
+     * Before API level 24 we release player resources early
+     * because there is no guarantee of onStop being called before the system terminates our app
+     * remember onPause means the activity is partly obscured by something else (e.g. incoming call, or alert dialog)
+     * so we do not want to be playing media while our activity is not in the foreground.
+     *
+     * source for above comment: https://gist.github.com/codeshifu/c26bb8a5f27f94d73b3a4888a509927c
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(Util.SDK_INT <= 23 || mExoPlayer != null) {
+            //get playback position in milliseconds, needed to save the
+            // seekbar position in onSavedInstanceState
+            playerPosition = mExoPlayer.getCurrentPosition();
+            mExoPlayer.setPlayWhenReady(false); // pause player
+            releasePlayer();
+        }
+    }
+
+    /*
+     API level 24+ we release the player resources when the activity is no longer visible (onStop)
+     NOTE: On API 24+, onPause is still visible!!! So we do not not want to release the player resources
+     this is made possible by the new Android Multi-Window Support https://developer.android.com/guide/topics/ui/multi-window.html
+     We stop playing media on API 24+ only when our activity is no longer visible aka onStop
+
+     source for above comment: https://gist.github.com/codeshifu/c26bb8a5f27f94d73b3a4888a509927c
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if(Util.SDK_INT <= 23 || mExoPlayer != null) {
+            releasePlayer();
+        }
+
+    }
+
+
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
