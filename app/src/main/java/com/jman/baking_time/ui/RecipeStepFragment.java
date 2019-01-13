@@ -108,6 +108,17 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     }
 
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setRetainInstance(true);
+//        if(savedInstanceState != null) {
+//            playerPosition = savedInstanceState.getLong("player_position", C.TIME_UNSET);
+//        }
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -173,11 +184,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         return rootView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
-    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -187,7 +194,6 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             outState.putLong("player_position", playerPosition);
             outState.putBoolean("player_state", mExoPlayer.getPlayWhenReady());
         }
-       // releasePlayer();
     }
 
     public void bindViews() {
@@ -346,8 +352,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     public void onPause() {
         super.onPause();
         if(mExoPlayer != null) {
-            playerPosition = mExoPlayer.getCurrentPosition();
-            mExoPlayer.setPlayWhenReady(false);
+            playerPosition = mExoPlayer.getCurrentPosition(); //get playback position in milliseconds
+            mExoPlayer.setPlayWhenReady(false); // pause player
             releasePlayer();
         }
     }

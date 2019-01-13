@@ -1,6 +1,7 @@
 package com.jman.baking_time.ui;
 
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
     private static final String TAG = RecipeDetailHostActivity.class.getSimpleName();
 
     private final String RECIPE_DETAIL_FRAGMENT_TAG = "RecipeDetailFragmentTag";
+    private final String RECIPE_STEP_FRAGMENT_TAG = "RecipeStepFragmentTag";
 
     FragmentManager fragmentManager;
 
@@ -42,6 +44,9 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
     private List<Step> steps;
 
     RecipeDetailFragment recipeDetailFragment;
+    RecipeStepFragment recipeStepFragment;
+
+    private String currentFragmentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,26 +100,44 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
         // use a FragmentManager and transaction to add fragment to the screen
         fragmentManager = getSupportFragmentManager();
 
-        if (savedInstanceState != null) { // saved instance state, fragment may exist
-            // look up the instance that already exists by tag
-            recipeDetailFragment = (RecipeDetailFragment)
-                    fragmentManager.findFragmentByTag(RECIPE_DETAIL_FRAGMENT_TAG);
-        } else if (recipeDetailFragment == null) {
-            // only create fragment if they haven't been instantiated already
-            // create new instance of fragment
-            recipeDetailFragment = new RecipeDetailFragment();
+        if (savedInstanceState == null) { // first time loading up
+            currentFragmentTag = RECIPE_DETAIL_FRAGMENT_TAG;
+            loadFragment(recipeDetailFragment, RECIPE_DETAIL_FRAGMENT_TAG);
+        } else {
+            currentFragmentTag = savedInstanceState.getString("currentFragment");
+
+            if(currentFragmentTag == RECIPE_DETAIL_FRAGMENT_TAG) {
+                // look up the instance that already exists by tag
+                recipeDetailFragment = (RecipeDetailFragment)
+                        fragmentManager.findFragmentByTag(RECIPE_DETAIL_FRAGMENT_TAG);
+
+                loadFragment(recipeDetailFragment, currentFragmentTag);
+            }
+            else if(currentFragmentTag == RECIPE_STEP_FRAGMENT_TAG) {
+                recipeStepFragment = (RecipeStepFragment)
+                        fragmentManager.findFragmentByTag(RECIPE_STEP_FRAGMENT_TAG);
+
+                loadFragment(recipeStepFragment, currentFragmentTag);
+            }
         }
+
+    }
+
+
+    private boolean loadFragment(Fragment fragment, String tag) {
 
         // Fragment transaction
         // dont add to backstack as it enables easier back navigation
-            if (!recipeDetailFragment.isInLayout()) {
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.recipeDetail_container, recipeDetailFragment, RECIPE_DETAIL_FRAGMENT_TAG)
-                        .commit();
-                Log.d(TAG, "The recipeDetailFragment got created");
-            }
+        if(fragment != null && !fragment.isInLayout()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.recipeDetail_container, fragment, tag)
+                    .commit();
 
+            return true;
+        }
+        // do nothing
+        return false;
     }
 
     @Override
@@ -138,6 +161,8 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
 
         recipeStepFragment.setArguments(arguments);
 
+        currentFragmentTag = RECIPE_STEP_FRAGMENT_TAG;
+
         // if in landscape. put step details in step container
         if(mTwoPane == true) {
             fragmentManager.beginTransaction()
@@ -153,6 +178,7 @@ public class RecipeDetailHostActivity extends AppCompatActivity implements OnRec
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("currentFragment", currentFragmentTag);
         super.onSaveInstanceState(outState);
     }
 
