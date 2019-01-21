@@ -36,13 +36,14 @@
 
         <TextView
             android:id="@+id/recipe_title"
-            android:layout_width="match_parent"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="11dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="292dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="167dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -52,7 +53,8 @@
             app:layout_constraintHorizontal_bias="0.173"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintVertical_bias="0.3"
+            tools:text="@tools:sample/cities" />
 
         <TextView
             android:id="@+id/servingsTitle"

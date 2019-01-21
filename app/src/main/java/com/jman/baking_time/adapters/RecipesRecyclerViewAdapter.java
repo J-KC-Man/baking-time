@@ -95,17 +95,44 @@ public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             name.setText(recipes.get(position).getName());
             servings.setText("Servings: " + recipes.get(position).getServings());
 
-            File f = new File("baking-time\\app\\src\\main\\res\\drawable\\nutella.jpg");
-            String nutellaURL = "https://hips.hearstapps.com/del.h-cdn.co/assets/16/32/1470773544-delish-nutella-cool-whip-pie-1.jpg";
-
             Picasso picasso = Picasso.get();
 
             picasso.setLoggingEnabled(true);
 
-            picasso.load(R.drawable.nutella)
-                   // .fit()
-                    .resize(600, 200)
-                    .centerCrop()
+            String id = recipes.get(position).getId();
+            int imageResource = 0;
+
+            /*
+            * Sources for images:
+            * Nutella pie (R.drawable.nutella): https://hips.hearstapps.com/del.h-cdn.co/assets/16/32/1470773544-delish-nutella-cool-whip-pie-1.jpg
+
+              Brownies (R.drawable.brownies): https://hips.hearstapps.com/del.h-cdn.co/assets/17/11/1489456319-delish-baileys-brownies-4.jpg
+
+              Yellow cake (R.drawable.yellowcake): https://i1.wp.com/media.hungryforever.com/wp-content/uploads/2017/07/11112744/easy-yellow-cake-recipe.jpg?ssl=1?w=356&strip=all&quality=80
+
+              Cheesecake (R.drawable.cheesecake): https://truffle-assets.imgix.net/dkkdgt98uadb_3Z5UdC2zKMwWUGC48aMEmS_Lemonade-Cheesecake_landscapeThumbnail_en-UK.png
+            *
+            * */
+
+            switch (id) {
+                case "1":
+                    imageResource = R.drawable.nutella;
+                    break;
+                case "2":
+                    imageResource = R.drawable.brownies;
+                    break;
+                case "3":
+                    imageResource = R.drawable.yellowcake;
+                    break;
+                case "4":
+                    imageResource = R.drawable.cheesecake;
+                default:
+                    break;
+            }
+
+            picasso.load(imageResource)
+                    .fit() // resize() to reduce the image size to the dimensions of the ImageView
+                    .centerInside() // scale dimensions that are equal to or less than bounds of the ImageView
                     .into(backgroundImage);
 
         }
