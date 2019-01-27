@@ -69,23 +69,19 @@ public class RecipeStepsViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class DescriptionViewHolder extends RecyclerView.ViewHolder {
 
 
-        private TextView stepTitle;
-        private TextView stepDescription;
+
         private Button viewStepButton;
 
         public DescriptionViewHolder(View itemView) {
             super(itemView);
 
-            stepTitle = itemView.findViewById(R.id.recipe_description_title_textView);
-            stepDescription = itemView.findViewById(R.id.recipe_description_textView);
+
             viewStepButton = itemView.findViewById(R.id.view_step_button);
         }
 
         public void bindViews(int position) {
-            stepTitle.setText("Step " + steps.get(position).getId());
-            stepDescription.setText(steps.get(position).getShortDescription());
 
-            viewStepButton.setText("View step " + steps.get(position).getId());
+            viewStepButton.setText("Step " + steps.get(position).getId() + ": " + steps.get(position).getShortDescription());
 
             viewStepButton.setOnClickListener(new View.OnClickListener() {
                 @Override
