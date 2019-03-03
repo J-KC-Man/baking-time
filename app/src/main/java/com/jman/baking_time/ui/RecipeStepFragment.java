@@ -2,27 +2,23 @@ package com.jman.baking_time.ui;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.media.session.MediaButtonReceiver;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.Fragment;
+import androidx.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.app.NotificationCompat.Style;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -42,12 +38,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.jman.baking_time.R;
-import com.jman.baking_time.adapters.RecipeStepRecyclerViewAdapter;
-import com.jman.baking_time.adapters.RecipeStepsViewAdapter;
-import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
-import com.jman.baking_time.interfaces.CallbackInvoker;
-import com.jman.baking_time.interfaces.IRecipeStepCallbackInvoker;
-import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Step;
 
 import java.util.List;
@@ -456,7 +446,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
                 MediaButtonReceiver.buildMediaButtonPendingIntent(getContext(),
                         PlaybackStateCompat.ACTION_PLAY_PAUSE));
 
-        NotificationCompat.Action restartAction = new android.support.v4.app.NotificationCompat
+        NotificationCompat.Action restartAction = new androidx.core.app.NotificationCompat
                 .Action(R.drawable.exo_controls_previous, getString(R.string.restart),
                 MediaButtonReceiver.buildMediaButtonPendingIntent
                         (getContext(), PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS));
@@ -470,10 +460,10 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
                 .setSmallIcon(R.drawable.ic_music_note)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .addAction(restartAction)
-                .addAction(playPauseAction)
-                .setStyle(new NotificationCompat.MediaStyle()
-                        .setMediaSession(mMediaSession.getSessionToken())
-                        .setShowActionsInCompactView(0,1));
+                .addAction(playPauseAction);
+//                .setStyle(new NotificationCompat.MediaStyle()
+//                        .setMediaSession(mMediaSession.getSessionToken())
+//                        .setShowActionsInCompactView(0,1));
 
 
         mNotificationManager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);

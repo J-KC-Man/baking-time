@@ -1,17 +1,14 @@
 package com.jman.baking_time.ui;
 
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-
 import com.jman.baking_time.R;
-
-import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
 import com.jman.baking_time.interfaces.OnRecipeStepClickListener;
 import com.jman.baking_time.models.Ingredient;
 import com.jman.baking_time.models.Recipe;

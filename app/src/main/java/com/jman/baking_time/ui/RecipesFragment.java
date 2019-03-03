@@ -2,17 +2,13 @@ package com.jman.baking_time.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
-
 import com.jman.baking_time.R;
 import com.jman.baking_time.adapters.RecipesRecyclerViewAdapter;
 import com.jman.baking_time.interfaces.CallbackInvoker;
@@ -21,11 +17,12 @@ import com.jman.baking_time.models.Recipe;
 import com.jman.baking_time.remoteDataSource.WebService;
 import com.jman.baking_time.remoteDataSource.WebServiceGenerator;
 import com.jman.baking_time.testing.SimpleIdlingResource;
-
-
-
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

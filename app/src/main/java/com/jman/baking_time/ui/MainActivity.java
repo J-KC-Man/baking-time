@@ -1,21 +1,17 @@
 package com.jman.baking_time.ui;
 
-import android.arch.lifecycle.LiveData;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jman.baking_time.R;
 import com.jman.baking_time.interfaces.OnRecipeClickListener;
 import com.jman.baking_time.models.Ingredient;
@@ -24,10 +20,10 @@ import com.jman.baking_time.testing.SimpleIdlingResource;
 import com.jman.baking_time.widget.RecipesWidgetIntentService;
 
 
-import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.test.espresso.IdlingResource;
 
 
 public class MainActivity extends AppCompatActivity implements OnRecipeClickListener {

@@ -1,19 +1,18 @@
 package com.jman.baking_time.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-
 import com.jman.baking_time.R;
 import com.jman.baking_time.models.Step;
 import com.jman.baking_time.ui.RecipeDetailFragment;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Justin on 15/07/2018.

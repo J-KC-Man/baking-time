@@ -5,9 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-
-import com.jman.baking_time.R;
+import androidx.annotation.Nullable;
 
 /**
  * service that handles the communication from widget to activity

@@ -1,25 +1,19 @@
 package com.jman.baking_time.adapters;
 
-import android.app.Fragment;
+
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.jman.baking_time.R;
 import com.jman.baking_time.models.Recipe;
-import com.jman.baking_time.ui.MainActivity;
-import com.jman.baking_time.ui.RecipeDetailHostActivity;
 import com.jman.baking_time.ui.RecipesFragment;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Justin on 12/06/2018.

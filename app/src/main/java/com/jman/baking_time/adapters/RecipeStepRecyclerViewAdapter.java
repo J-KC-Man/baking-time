@@ -1,32 +1,18 @@
 package com.jman.baking_time.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.jman.baking_time.R;
 import com.jman.baking_time.models.Step;
-import com.jman.baking_time.ui.RecipeDetailFragment;
-import com.squareup.picasso.Picasso;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 
 /**
  * Created by Justin on 05/07/2018.
